@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Tax Invoice</title>
+    <link rel="stylesheet" href="style.css" media="all" />
+    <script>
+    function curr(str){
+      return Number(str).toLocaleString('en-IN');
+    }
+    function igst(str){
+      document.getElementById("igst").value = Number(0.05 * str);
+      return Number(0.05 * str).toLocaleString('en-IN');
+    }
+    function sgst(str){
+      document.getElementById("sgst").value = Number(0.025 * str)
+      return Number(0.025 * str).toLocaleString('en-IN');
+    }
+    function cgst(str){
+      document.getElementById("cgst").value = Number(0.025 * str)
+      return Number(0.025 * str).toLocaleString('en-IN');
+    }
+    function tax(str){
+      return Number(0.05 * str).toLocaleString('en-IN');
+    }
+    </script>
+    <script language="javascript" type="text/javascript">
+    function countQuantity(){
+             var tds = document.getElementById('item').getElementsByTagName('td');
+             var sum = 0;
+             for(var i = 0; i < tds.length; i ++) {
+                 if(tds[i].className == 'quantity') {
+                     sum += isNaN(tds[i].innerHTML) || tds[i].innerHTML == "" ? 0 : parseInt(tds[i].innerHTML);
+                 }
+             }
+             return Number(sum).toLocaleString('en-IN');
+        }
+        function countAmount(str){
+                 var tds = document.getElementById(str).getElementsByTagName('input');
+                 var sum = 0;
+                 for(var i = 0; i < tds.length; i ++) {
+                     if(tds[i].className == 'amount') {
+
+                         sum += isNaN(tds[i].value) || tds[i].value == "" ? 0 : parseInt(tds[i].value);
+                     }
+                 }
+                 return Number(sum).toLocaleString('en-IN');
+            }
+            function convertNumberToWords(amount) {
+      var words = new Array();
+      words[0] = '';
+      words[1] = 'One';
+      words[2] = 'Two';
+      words[3] = 'Three';
+      words[4] = 'Four';
+      words[5] = 'Five';
+      words[6] = 'Six';
+      words[7] = 'Seven';
+      words[8] = 'Eight';
+      words[9] = 'Nine';
+      words[10] = 'Ten';
+      words[11] = 'Eleven';
+      words[12] = 'Twelve';
+      words[13] = 'Thirteen';
+      words[14] = 'Fourteen';
+      words[15] = 'Fifteen';
+      words[16] = 'Sixteen';
+      words[17] = 'Seventeen';
+      words[18] = 'Eighteen';
+      words[19] = 'Nineteen';
+      words[20] = 'Twenty';
+      words[30] = 'Thirty';
+      words[40] = 'Forty';
+      words[50] = 'Fifty';
+      words[60] = 'Sixty';
+      words[70] = 'Seventy';
+      words[80] = 'Eighty';
+      words[90] = 'Ninety';
+      amount = amount.toString();
+      var atemp = amount.split(".");
+      var number = atemp[0].split(",").join("");
+      var n_length = number.length;
+      var words_string = "";
+      if (n_length <= 9) {
+          var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+          var received_n_array = new Array();
+          for (var i = 0; i < n_length; i++) {
+              received_n_array[i] = number.substr(i, 1);
+          }
+          for (var i = 9 - n_length, j = 0; i < 9; i++, j++) {
+              n_array[i] = received_n_array[j];
+          }
+          for (var i = 0, j = 1; i < 9; i++, j++) {
+              if (i == 0 || i == 2 || i == 4 || i == 7) {
+                  if (n_array[i] == 1) {
+                      n_array[j] = 10 + parseInt(n_array[j]);
+                      n_array[i] = 0;
+                  }
+              }
+          }
+          value = "";
+          for (var i = 0; i < 9; i++) {
+              if (i == 0 || i == 2 || i == 4 || i == 7) {
+                  value = n_array[i] * 10;
+              } else {
+                  value = n_array[i];
+              }
+              if (value != 0) {
+                  words_string += words[value] + " ";
+              }
+              if ((i == 1 && value != 0) || (i == 0 && value != 0 && n_array[i + 1] == 0)) {
+                  words_string += "Crores ";
+              }
+              if ((i == 3 && value != 0) || (i == 2 && value != 0 && n_array[i + 1] == 0)) {
+                  words_string += "Lakhs ";
+              }
+              if ((i == 5 && value != 0) || (i == 4 && value != 0 && n_array[i + 1] == 0)) {
+                  words_string += "Thousand ";
+              }
+              if (i == 6 && value != 0 && (n_array[i + 1] != 0 && n_array[i + 2] != 0)) {
+                  words_string += "Hundred and ";
+              } else if (i == 6 && value != 0) {
+                  words_string += "Hundred ";
+              }
+          }
+          words_string = words_string.split("  ").join(" ");
+      }
+      return words_string;
+  }
+    </script>
+  </head>
+  <body>
+    <header class="clearfix">
+      <div id="logo">
+        <img src="logo.png">
+      </div>
+      <div id="company">
+        <h2 class="name">Sunil Kumar Rajendra Kumar</h2>
+        <div>Railway Station Road, Neemuch, Neemuch - 458441</div>
+        <div>+91 9407487878</div>
+        <div>State: Madhya Pradesh, Code: 23</div>
+        <div><a href="mailto:company@example.com">ronakmittal606@gmail.com</a></div>
+      </div>
+      </div>
+    </header>
+    <main>
+      <div id="details" class="clearfix">
+        <div id="client">
+          <div class="to"><b>Buyer:</b></div>
+          <h2 class="name">Christopher Rozario</h2>
+          <div class="address">70 Rajaswa Colony, Neemuch, MP</div>
+          <div class="gstbuyer">GSTIN/UIN : 23ABCDE1234F2Z5</div>
+          <div class="statebuyer">State: Madhya Pradesh, Code: 23</div>
+          <div class="email"><a href="mailto:christopherrozario7@gmail.com">christopherrozario7@gmail.com</a></div>
+          <br><br>
+          <div class="to"><b>Ship To:</b></div>
+          <h2 class="name">Christopher Rozario</h2>
+          <div class="address">70 Rajaswa Colony, Neemuch, MP</div>
+          <div class="gstshipped">GSTIN/UIN : 23ABCDE1234F2Z5</div>
+          <div class="stateshippedr">State: Madhya Pradesh, Code: 23</div>
+          <div class="email"><a href="mailto:christopherrozario7@gmail.com">christopherrozario7@gmail.com</a></div>
+        </div>
+        <div id="invoice">
+          <h1>INVOICE 2018/1</h1>
+          <div class="date">Date of Invoice: <b>25/07/2018</b></div>
+          <div class="date">Due Date: <b>30/06/2014</b></div>
+          <div class="info">Delivery Note: <b>&nbsp;</b></div>
+          <div class="info">Mode of Payment: <b>ADVANCE</b></div>
+          <div class="info">Supplier Reference: <b>&nbsp;</b></div>
+          <div class="info">Other Reference: <b>&nbsp;</b></div>
+          <div class="info">Buyer Order Number: <b>&nbsp;</b></div>
+          <div class="info">Dated: <b>&nbsp;</b></div>
+          <div class="info">Despatch Document Number: <b>&nbsp;</b></div>
+          <div class="info">Despatched Through: <b>&nbsp;</b></div>
+          <div class="info">Destination: <b>Indore</b></div>
+          <div class="info">Bill of Lading/LR-RR No.: <b>&nbsp;</b></div>
+          <div class="info">Motor Vehicle Number: <b>MG 16 CC 6790</b></div>
+        </div>
+      </div>
+      <div class="item">
+      <table border="0"  id="item" cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <th class="no">Sr.</th>
+            <th>DESCRIPTION</th>
+            <th>No of Pckt.</th>
+            <th>DESCRIPTION</th>
+            <th>HSN/SAC</th>
+            <th>QUANTITY</th>
+            <th>RATE</th>
+            <th>PER</th>
+            <th>AMOUNT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="no">01</td>
+            <td><h3>MALEGAON</h3></td>
+            <td>240</td>
+            <td>SUGAR S/30</td>
+            <td>1701</td>
+            <td class="quantity">210</td>
+            <td>2485</td>
+            <td>QUINTAL</td>
+            <td class="amount"> <input class="amount" value="521850" hidden><script>document.write(curr(521850));</script></td>
+          </tr>
+          <tr>
+            <td class="no">01</td>
+            <td><h3>MALEGAON</h3></td>
+            <td>240</td>
+            <td>SUGAR S/30</td>
+            <td>1701</td>
+            <td class="quantity">210</td>
+            <td>2485</td>
+            <td>QUINTAL</td>
+            <td class="amount"><input class="amount" value="521850" hidden><script>document.write(curr(521850));</script></td>
+          </tr>
+          <div class="sgst">
+          <tr>
+            <td class="no"></td>
+            <td><h3></h3></td>
+            <td></td>
+            <td>SGST OUTPUT TAX 2.5%</td>
+            <td>1701</td>
+            <td></td>
+            <td>2.5</td>
+            <td>%</td>
+            <td><input id="sgst" class="amount" hidden><script>document.write(sgst(521850));</script></td>
+          </tr>
+        </div>
+        <div class="cgst">
+        <tr>
+          <td class="no"></td>
+          <td><h3></h3></td>
+          <td></td>
+          <td>CGST OUTPUT TAX 5%</td>
+          <td>1701</td>
+          <td></td>
+          <td>2.5</td>
+          <td>%</td>
+          <td><input id="cgst" class="amount" hidden><script>document.write(cgst(521850));</script></td>
+        </tr>
+      </div><!--
+          <div class="igst">
+          <tr>
+            <td class="no"></td>
+            <td><h3></h3></td>
+            <td></td>
+            <td>IGST OUTPUT TAX 5%</td>
+            <td></td>
+            <td class="quantity"></td>
+            <td>2.5</td>
+            <td>%</td>
+            <td class="amount"><input id="igst" class="amount" hidden><script>document.write(igst(521850));</script></td>
+          </tr>
+        </div>
+      -->
+
+        <tr>
+          <td class="no"></td>
+          <td><h3></h3></td>
+          <td></td>
+          <td>Total</td>
+          <td></td>
+          <td><script>document.write(countQuantity());</script></td>
+          <td></td>
+          <td></td>
+          <td><script>document.write(countAmount('item'));</script></td>
+        </tr>
+<!--
+        <tr>
+            <td class="no">02</td>
+            <td class="desc"><h3>Website Development</h3>Developing a Content Management System-based Website</td>
+            <td class="unit">$40.00</td>
+            <td class="qty">80</td>
+            <td class="total">$3,200.00</td>
+          </tr>
+          <tr>
+            <td class="no">03</td>
+            <td class="desc"><h3>Search Engines Optimization</h3>Optimize the site for search engines (SEO)</td>
+            <td class="unit">$40.00</td>
+            <td class="qty">20</td>
+            <td class="total">$800.00</td>
+          </tr>
+        -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Amount Chargable(in words)</td>
+            <td colspan="7"><script>document.write(convertNumberToWords(547942));</script></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="tax">
+      <table class= "tax" border="0" id="tax" cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <th>HSN/SAC</th>
+            <th>DESCRIPTION</th>
+            <th>TAXABLE AMOUNT</th>
+            <th>RATE</th>
+            <th>AMOUNT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1701</td>
+            <td>SGST</td>
+            <td><input class="amount" value="521850" hidden><script>document.write(curr(521850));</script></td>
+            <td>2.5%</td>
+            <td><input id="sgst" class="tax" hidden><script>document.write(sgst(521850));</script></td>
+          </tr>
+          <tr>
+            <td>1701</td>
+            <td>CGST</td>
+            <td><input class="amount" value="521850" hidden><script>document.write(curr(521850));</script></td>
+            <td>2.5%</td>
+            <td><input id="cgst" class="tax" hidden><script>document.write(cgst(521850));</script></td>
+          </tr>
+          <tr>
+          <td></td>
+          <td><b>Total</b></td>
+          <td><script>document.write(countAmount('tax'));</script></td>
+          <td></td>
+          <td><script>document.write(tax(521850));</script></td>
+        </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Amount Chargable(in words)</td>
+            <td colspan="3"><script>document.write(convertNumberToWords(tax(521850)));</script></td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+      <div id="thanks">Thank you!</div>
+
+    </main>
+
+    <div id="notices">
+      <div class="notice">
+        <div>DECLERATION:</div>
+        We declare that this invoice shows the actual price of the
+    goods described and that all particulars are true and
+    correct.</div>
+    <div class="sign">
+      For Sunil Kumar Rajendra Kumar
+      <br>
+      (Authorised Signatory)
+    </div>
+    </div>
+
+    <footer>
+      This is a computer generated Invoice.
+    </footer>
+  </body>
+</html>
